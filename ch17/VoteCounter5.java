@@ -3,22 +3,26 @@ package ch17;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class VoteCounter5 {
-    public static void main(String[] args) {
-        ExecutorService executorService = Executors.newCachedThreadPool();
+import java.util.concurrent.atomic.AtomicInteger;
 
-        for (int i = 0; i < 100; i++) {
-            final int stationId = i;
-            executorService.submit(() -> {
-                try {
-                    System.out.println("Counting votes at station: " + stationId + ", Thread id: " + Thread.currentThread().threadId());
-                    Thread.sleep((int) (Math.random() * 200));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
+public class VoteCounter5 implements Runnable {
+    private AtomicInteger count = new AtomicInteger(0);
+
+    public void run() {
+        int iterations = 1_000_000;
+        for (int i = 0; i < iterations; i++) {
+            voteForCandidate();
         }
-        executorService.shutdown();
+        long threadId = Thread.currentThread().threadId(); // Use threadId() instead of getId()
+        System.out.println("Thread " + threadId + " voted " + count + " times");
     }
 
+    private void voteForCandidate() {
+        int currentValue;
+        int newValue;
+        do {
+            currentValue = count.get();
+            newValue = currentValue + 1;
+        } while (!count.compareAndSet(currentValue, newValue));
+    }
 }

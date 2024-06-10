@@ -5,20 +5,10 @@ import java.util.concurrent.Executors;
 
 public class VoteCounter4 {
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        Thread thread = new Thread(() -> {
+            System.out.println("Thread ID: " + Thread.currentThread().threadId());
+        });
 
-        for (int i = 0; i < 100; i++) {
-            final int stationId = i;
-            executorService.submit(() -> {
-                try {
-                    System.out.println("Counting votes at station: " + stationId + ", Thread id: " + Thread.currentThread().threadId());
-                    Thread.sleep((int) (Math.random() * 200));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        executorService.shutdown();
+        thread.start();
     }
-
 }

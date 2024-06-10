@@ -1,9 +1,9 @@
 package ch17.examplerunnableinterface;
 
-class MyRunnable implements Runnable {
+public class MyRunnable implements Runnable {
     @Override
     public void run() {
-        System.out.println("Hello from thread: " + Thread.currentThread().threadId());
+        System.out.println("Thread ID: " + Thread.currentThread().threadId());
     }
 }
 

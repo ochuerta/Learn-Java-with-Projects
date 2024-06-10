@@ -1,13 +1,16 @@
 package ch17.dataraceandsynchronized;
 
 public class Count {
-    static int counter = 0;
+    private int count = 0;
 
-    static synchronized void incrementCounter() {
-        int current = counter;
-        System.out.println("Before: " + counter + ", Current thread: " + Thread.currentThread().threadId());
-        counter = current + 1;
-        System.out.println("After: " + counter);
+    public synchronized void increment() {
+        count++;
+        System.out.println("Thread ID: " + Thread.currentThread().threadId() + " - Count: " + count);
+    }
+
+    public int getCount() {
+        return count;
     }
 }
+
 
